@@ -23,7 +23,7 @@ enum LaneType : int64
 	SPECIAL1        = roadmanager::Lane::LaneType::LANE_TYPE_SPECIAL1,
 	SPECIAL2        = roadmanager::Lane::LaneType::LANE_TYPE_SPECIAL2,
 	SPECIAL3        = roadmanager::Lane::LaneType::LANE_TYPE_SPECIAL3,
-	ROADMARKS       = roadmanager::Lane::LaneType::LANE_TYPE_ROADMARKS,
+	ROADWORKS       = roadmanager::Lane::LaneType::LANE_TYPE_ROADWORKS,
 	TRAM            = roadmanager::Lane::LaneType::LANE_TYPE_TRAM,
 	RAIL            = roadmanager::Lane::LaneType::LANE_TYPE_RAIL,
 	ENTRY           = roadmanager::Lane::LaneType::LANE_TYPE_ENTRY,
@@ -276,5 +276,11 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, meta = (Category = "OpenDRIVE"))
 	float GetRoadCurvatureAngle(float LookaheadDist) const;
+
+	/**
+	* Resets pitch and roll to align with the road
+	*/
+	UFUNCTION(BlueprintCallable, meta = (Category = "OpenDRIVE"))
+	void ResetPitchRoll();
 
 };

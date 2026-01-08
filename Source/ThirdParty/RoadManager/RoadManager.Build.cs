@@ -17,14 +17,16 @@ public class RoadManager : ModuleRules
 				Path.Combine(RoadManagerSrcDir, "RoadManager"),
 				Path.Combine(RoadManagerSrcDir, "CommonMini"),
 				Path.Combine(RoadManagerDir, "externals/pugixml"),
+				Path.Combine(RoadManagerDir, "externals/fmt/include"),
 			}
 		);
 
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
-            PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "lib", "RelWithDebInfo", "RoadManager.lib"));
-            PublicDelayLoadDLLs.Add("RoadManager.dll");
-            RuntimeDependencies.Add(Path.Combine(ModuleDirectory, "bin", "RelWithDebInfo", "RoadManager.dll"));
+			PublicDefinitions.Add("__MINGW32__=0");
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "lib", "RelWithDebInfo", "RoadManager.lib"));
+			PublicDelayLoadDLLs.Add("RoadManager.dll");
+			RuntimeDependencies.Add(Path.Combine(ModuleDirectory, "bin", "RelWithDebInfo", "RoadManager.dll"));
         }
 	}
 }
