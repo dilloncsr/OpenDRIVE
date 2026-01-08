@@ -62,10 +62,15 @@ void UOpenDriveVisualizerTool::Generate(const float Offset, const float Step) co
 	FActorSpawnParameters SpawnParam;
 	SpawnParam.bHideFromSceneOutliner = true;
 
+	TArray<UOpenDriveSolver::LaneRef> LaneList = Solver->GetAllLanesOfType(/* All */);
+	
+	FScopedSlowTask GenerateTask(LaneList.Num(), LOCTEXT("Odr_GenerateTask", "Generating roads..."));
+	GenerateTask.MakeDialog();
+	
 	/* Draw roads */
-	for (TArray<UOpenDriveSolver::LaneRef> LaneList = Solver->GetAllLanesOfType(/* All */);
-		const auto [Road, LaneSection, Lane] : LaneList)
+	for (const auto [Road, LaneSection, Lane] : LaneList)
 	{
+		GenerateTask.EnterProgressFrame();
 		AOpenDriveEditorLane* NewLane = TargetWorld->SpawnActor<AOpenDriveEditorLane>(SpawnParam);
 		NewLane->Initialize(Road, LaneSection, Lane, Offset, Step);
 	}
@@ -86,7 +91,7 @@ void UOpenDriveVisualizerTool::DeleteAllLanes() const
 {
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(TargetWorld, AOpenDriveEditorLane::StaticClass(), Actors);
-	
+
 	for (AActor* Actor : Actors)
 	{
 		Actor->Destroy();

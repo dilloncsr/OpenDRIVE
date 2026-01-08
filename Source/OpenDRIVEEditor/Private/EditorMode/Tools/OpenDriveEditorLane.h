@@ -1,12 +1,13 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "InteractiveToolObjects.h"
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
 #include "RoadManager.hpp"
 #include "OpenDriveEditorLane.generated.h"
 
 UCLASS(Transient, Hidden, NotBlueprintable, NotBlueprintType, NotPlaceable)
-class OPENDRIVEEDITOR_API AOpenDriveEditorLane : public AActor
+class OPENDRIVEEDITOR_API AOpenDriveEditorLane : public AInternalToolFrameworkActor
 {
 	GENERATED_BODY()
 	
@@ -58,12 +59,6 @@ public:
 	*/
 	int GetPredecessorId() const;
 
-	/**
-    * Sets arrows visibility
-    * @param bIsVisible New visibility
-    */
-	void SetArrowVisibility(bool bIsVisible);
-
 protected : 
 
 	/**
@@ -88,15 +83,7 @@ protected :
 	* @param Step The step used
 	*/
 	static void CheckLastTwoPointsDistance(USplineComponent* LaneSpline, float Step);
-
-	/**
-	* Sets the arrow meshes along the lane's spline
-	* @param LaneSpline The lane's spline
-	* @param Mesh The arrow mesh
-	* @param bIsJunction True if it's a junction
-	*/
-	void SetArrowMeshes(const USplineComponent* LaneSpline, const TObjectPtr<UStaticMesh>& Mesh, bool bIsJunction);
-
+	
 	/**
 	* Sets the colored spline meshes along the lane's spline
 	* @param LaneSpline The lane's spline
