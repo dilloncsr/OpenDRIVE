@@ -35,7 +35,8 @@ public:
 		float RoadZOffset = -10.f,
 		float Falloff = 100.f,
 		ULandscapeLayerInfoObject *PaintLayer = 0,
-		FName LayerName = FName(TEXT("Layer"))
+		FName LayerName = FName(TEXT("Layer")),
+		bool bTryCleanArtifacts = true
 	);
 
 	/**
@@ -50,16 +51,5 @@ public:
 		float Falloff = 100.f,
 		ULandscapeLayerInfoObject *PaintLayer = 0,
 		FName LayerName = FName(TEXT("Layer"))
-	);
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Assets")
-	void ApplySpline(
-		ALandscapeProxy *Landscape,
-		USplineComponent *SplineComponent,
-		float WidthStart,
-		float WidthEnd,
-		float Falloff,
-		ULandscapeLayerInfoObject *PaintLayer,
-		FName LayerName
 	);
 };

@@ -24,7 +24,8 @@ void UOpenDrive2Landscape::SculptLandscape(
 	float RoadZOffset,
 	float Falloff,
 	ULandscapeLayerInfoObject *PaintLayer,
-	FName LayerName
+	FName LayerName,
+	bool bTryCleanArtifacts
 ) {
 	// Landscapes to sculpt
 	USelection *Selection = GEditor->GetSelectedActors();
@@ -71,7 +72,16 @@ void UOpenDrive2Landscape::SculptLandscape(
 			sp.Z += RoadZOffset;
 			Spline->AddSplinePoint(sp, ESplineCoordinateSpace::World);
 
-			s += 5;
+			if (s == 0 && bTryCleanArtifacts) {
+				// Artifacts can occur on vertices when using low spline length + linear segments
+				// So bTryCleanArtifacts runs the method twice, offsetting one run by half a
+				// segment length.
+				// This is combined with a prime number of triangles, ensuring that all vertices
+				// from the first run are covered by the second.
+				s += 2.5;
+			} else {
+				s += 5;
+			}
 		}
 
 		// Set all points to linear (default causes issues)
@@ -80,10 +90,25 @@ void UOpenDrive2Landscape::SculptLandscape(
 		}
 
 		for (auto &ls : Landscapes) {
-			// The following doesn't work (EditorApplySpline isn't accessible via C++)
-			// See https://answers.unrealengine.com/questions/228146/editorapplyspline-is-not-accessible-via-c.html
-			//ls->EditorApplySpline(Spline);
-			ApplySpline(ls, Spline, WidthStart, WidthEnd, Falloff, PaintLayer, LayerName);
+			ls->EditorApplySpline(
+				Spline,
+				WidthStart,
+				WidthEnd,
+				Falloff,
+				Falloff,
+				/*StartRoll=*/0.f,
+				/*EndRoll=*/0.f,
+				// See comment above on bTryCleanArtifacts for why I use 7 subdivisions here,
+				// which is a prime number ensuring good coverage of all vertices.
+				/*NumSubdivisions=*/7,
+				/*bRaiseHeights=*/true,
+				/*bLowerHeights=*/true,
+				PaintLayer,
+				LayerName
+			);
+		}
+		if (bTryCleanArtifacts) {
+			SculptLandscape(RoadZOffset, Falloff, PaintLayer, LayerName, false);
 		}
 	}
 }
