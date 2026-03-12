@@ -13,7 +13,7 @@ If you're using a standard engine release (i.e., you're not building it yourself
 
 Currently, this plugin  supports **Windows only**. For Linux support, it is being discussed in [#8](https://github.com/brifsttar/OpenDRIVE/issues/8).
 
-The plugin's `master` branch is tested against the latest Unreal version. If you work with a previous release of the engine, check the tags for a compatible plugin version (earliest is 4.26).
+The plugin's default branch is (*should be*) named after the highest compatible Unreal Engine version. For any other engine version, check the tags and branches for a compatible plugin version (earliest is 4.26).
 
 *For [CARLA](https://github.com/carla-simulator/carla) users*: due to conflicting classes name, the plugin doesn't work as-is alongside CARLA. The simplest workaround is to delete this plugin's `ATrafficLightController` class to remove the conflict.
 
